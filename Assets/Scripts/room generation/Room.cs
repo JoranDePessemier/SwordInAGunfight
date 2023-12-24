@@ -60,8 +60,8 @@ public class Room : MonoBehaviour
         _rightTiles = _rightExitParent.GetComponentsInChildren<Transform>().Skip<Transform>(1).ToArray();
         _leftTiles = _leftExitparent.GetComponentsInChildren<Transform>().Skip<Transform>(1).ToArray();
 
-        SetTileTemplates();
         SetRandomTiles();
+        SetTileTemplates();
     }
 
     private void SetRandomTiles()
