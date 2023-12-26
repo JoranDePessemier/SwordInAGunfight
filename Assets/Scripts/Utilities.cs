@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class Utilities 
@@ -13,5 +15,20 @@ public static class Utilities
     {
         yield return new WaitForSeconds(time);
         onComplete?.Invoke();
+    }
+
+    public static List<Type> Shuffle<Type>( List<Type> collection)
+    {
+        List<Type> collectionToBeShuffled = new List<Type>(collection);
+        List<Type> returnCollection = new List<Type>();
+
+        while (collectionToBeShuffled.Count > 0)
+        {
+            Type item = collection[UnityEngine.Random.Range(0, collection.Count)];
+            returnCollection.Add(item);
+            collectionToBeShuffled.Remove(item);
+        }
+
+        return returnCollection;    
     }
 }

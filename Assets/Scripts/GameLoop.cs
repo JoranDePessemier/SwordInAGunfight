@@ -10,6 +10,7 @@ public class GameLoop : MonoBehaviour
     private PlayerHealth _healthScript;
     private GameUIController _uiController;
     private ExitBehaviour _exitBehaviour;
+    private EnemyBaseBehaviour[] _enemies;
 
     private int _playerPoints;
 
@@ -67,6 +68,12 @@ public class GameLoop : MonoBehaviour
 
         CurrentPlayerHp = _startingPlayerHp;
         GameTime = _startingGameTime;
+
+        _enemies = FindObjectsOfType<EnemyBaseBehaviour>();
+        foreach(EnemyBaseBehaviour enemy in _enemies)
+        {
+            enemy.Target = _healthScript.GetComponent<Transform>();
+        }
     }
 
     private void Update()

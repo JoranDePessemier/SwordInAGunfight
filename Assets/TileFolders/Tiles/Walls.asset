@@ -19,7 +19,7 @@ MonoBehaviour:
   - m_Id: 1
     m_Sprites:
     - {fileID: -1336182143, guid: 762661b45083fd940ac086a7f132be64, type: 3}
-    m_GameObject: {fileID: 3210660879738994858, guid: e927aa7be580cd84bbec55b7a1059590, type: 3}
+    m_GameObject: {fileID: 0}
     m_MinAnimationSpeed: 1
     m_MaxAnimationSpeed: 1
     m_PerlinScale: 0.5
@@ -195,7 +195,7 @@ MonoBehaviour:
   - m_Id: 13
     m_Sprites:
     - {fileID: 391497196, guid: 762661b45083fd940ac086a7f132be64, type: 3}
-    m_GameObject: {fileID: 3210660879738994858, guid: e927aa7be580cd84bbec55b7a1059590, type: 3}
+    m_GameObject: {fileID: 0}
     m_MinAnimationSpeed: 1
     m_MaxAnimationSpeed: 1
     m_PerlinScale: 0.5
