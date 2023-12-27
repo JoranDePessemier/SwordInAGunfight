@@ -509,8 +509,9 @@ MonoBehaviour:
   _startingRoom: {fileID: 2683039991400551208, guid: 082920638b38c5c458a283e88de30497, type: 3}
   _roomPrefabs:
   - {fileID: 9056442096214037134, guid: 39673e1900c71a64a8cdbc7ba4f5b68f, type: 3}
+  - {fileID: 6985449405829066649, guid: 980a2d3f647e4564a8966d6845ecc79b, type: 3}
   _moveAmount: 20
-  _amountToGenerate: 1000
+  _amountToGenerate: 30
   _tilesCombinedMap: {fileID: 870716224}
   _groundCombinedMap: {fileID: 156543911}
   _wallTile: {fileID: 11400000, guid: 3ce8b85ac45ab4b45ab1a2edaebb686b, type: 2}
