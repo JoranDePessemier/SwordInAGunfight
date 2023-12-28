@@ -6,18 +6,34 @@ namespace WaveFunctionCollapse
 {
     public class Cell : MonoBehaviour
     {
-        public bool collapsed { get; set; }
-        public Tile[] TileOptions;
+        public bool Collapsed { get; set; }
+        public Tile[] TileOptions { get; private set; } 
 
         public void CreateCell(bool collapseState, Tile[] tiles)
         {
-            collapsed = collapseState;
+            Collapsed = collapseState;
             TileOptions = tiles;
         }
 
         public void RecreateCell(Tile[] tiles)
         {
             TileOptions = tiles;
+        }
+
+        private void Update()
+        {
+            TextMesh text = this.GetComponentInChildren<TextMesh>();
+
+            text.text = TileOptions.Length.ToString();
+            
+            if(Collapsed)
+            {
+                text.color = Color.red;
+            }
+            else
+            {
+                text.color = Color.green;
+            }
         }
     }
 }

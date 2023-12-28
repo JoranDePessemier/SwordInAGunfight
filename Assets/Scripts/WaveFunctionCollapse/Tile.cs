@@ -1,46 +1,59 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace WaveFunctionCollapse
 {
     public class Tile : MonoBehaviour
     {
-        [SerializeField]
-        private Tile[] _upNeighBours;
-
-        public Tile[] UpNeighbours
-        {
-            get { return _upNeighBours; }
-            set { _upNeighBours = value; }
-        }
 
         [SerializeField]
-        private Tile[] _downNeighbours;
+        private Direction[] _openDirections;
 
-        public Tile[] DownNeighbours
+        public Direction[] OpenDirections => _openDirections;
+
+        public void SetAllNeighBours(Tile[] options)
         {
-            get { return _downNeighbours; }
-            set { _downNeighbours = value; }
+            SetNeighBoursforDirection(Direction.Up,Direction.Down,UpNeighbours,options);
+            SetNeighBoursforDirection(Direction.Down, Direction.Up, DownNeighbours, options);
+            SetNeighBoursforDirection(Direction.Right, Direction.Left, RightNeighbours, options);
+            SetNeighBoursforDirection(Direction.Left, Direction.Right, LeftNeighbours, options);
         }
 
-        [SerializeField]
-        private Tile[] _rightNeighbours;
-
-        public Tile[] RightNeighbours
+        private void SetNeighBoursforDirection(Direction direction,Direction oppositeDirection,List<Tile> neighbours,Tile[] options)
         {
-            get { return _rightNeighbours; }
-            set { _rightNeighbours = value; }
+            if (OpenDirections.Contains(direction))
+            {
+                foreach (Tile tile in options)
+                {
+                    if (tile.OpenDirections.Contains(oppositeDirection))
+                    {
+                        neighbours.Add(tile);
+                    }
+                }
+            }
+            else
+            {
+                foreach (Tile tile in options)
+                {
+                    if (!tile.OpenDirections.Contains(oppositeDirection))
+                    {
+                        neighbours.Add(tile);
+                    }
+                }
+            }
         }
 
-        [SerializeField]
-        private Tile[] _leftNeighbours;
+        public List<Tile> UpNeighbours { get; private set; } = new List<Tile>();
 
-        public Tile[] LeftNeighbours
-        {
-            get { return _leftNeighbours; }
-            set { _leftNeighbours = value; }
-        }
+        public List<Tile> DownNeighbours { get; private set; } = new List<Tile>();
+
+
+        public List<Tile> RightNeighbours { get; private set; } = new List<Tile>();
+
+        public List<Tile> LeftNeighbours { get;private set; } = new List<Tile>();
 
     }
 

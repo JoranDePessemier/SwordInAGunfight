@@ -486,6 +486,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 758974012}
+  - component: {fileID: 758974013}
   m_Layer: 0
   m_Name: Generator
   m_TagString: Untagged
@@ -508,6 +509,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &758974013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 758974010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ca71cace6aaa1945a013b6f1cf9d78d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dimensions: {x: 30, y: 30}
+  _cellSize: 10
+  _cellObject: {fileID: 5708984352104248064, guid: 73b67e2e8690f4946938d3f60b89c2fe, type: 3}
+  _tilePrefabs:
+  - {fileID: 5015635019259778367, guid: 7f3e3a5125834a64cac2391bb26259e6, type: 3}
+  - {fileID: 1139465321412524363, guid: cc9fbdb9bf447dc46ac3b88e2695ffda, type: 3}
+  - {fileID: 6298517519712713824, guid: 2c06eb480225c1446b003d6e11cf2050, type: 3}
+  - {fileID: 5137918289926556123, guid: 8cdefd6bcc45f3a4fa04f151cb3d61e3, type: 3}
+  - {fileID: 4329911154642953056, guid: bcb7c5285d752b240b8f35c632adef06, type: 3}
+  - {fileID: 9144520024043733592, guid: 5ed82a51ba16f1147a9d81404c485fb6, type: 3}
+  - {fileID: 8761761259219322989, guid: e6e83feaa0ea7004f932ac726df4c462, type: 3}
+  - {fileID: 1784890539935427866, guid: 4f2530a824ea09c45af40cb41c150fe2, type: 3}
+  - {fileID: 8049309847329296242, guid: 267487d255d162e49b01d2f526d15c36, type: 3}
+  - {fileID: 3149815198450419144, guid: 2cda64f44b0cd8a439fa445962da6d2e, type: 3}
+  - {fileID: 7383975033934858410, guid: 7df4e67ff59bef84eae70ba68140bcc5, type: 3}
+  - {fileID: 2697952172698819449, guid: a2d5293de80e51b499739fa16e2f8a55, type: 3}
+  - {fileID: 225468895770103455, guid: 3716ad77bdf0d8b4aa7816625c88da6c, type: 3}
+  - {fileID: 3918937029574587632, guid: a0741f200786df64493a37f441ea9d91, type: 3}
+  - {fileID: 7520489763415349590, guid: 99d1a49b9d0abe74fab4ef219362ff0d, type: 3}
 --- !u!1 &870716221
 GameObject:
   m_ObjectHideFlags: 0
