@@ -180,30 +180,9 @@ namespace RoomGeneration
 
         public void RemoveLeftTiles() => RemoveTiles(_leftTiles);
 
-        public Dictionary<Vector3, TileBase> GetRoomTiles() => GetTiles(TileMap);
+        public Dictionary<Vector3, TileBase> GetRoomTiles() => Utilities.GetTilesInMap(GroundMap);
 
-        public Dictionary<Vector3, TileBase> GetGroundTiles() => GetTiles(GroundMap);
-
-
-        private Dictionary<Vector3, TileBase> GetTiles(Tilemap tileMap)
-        {
-            Dictionary<Vector3, TileBase> returnTiles = new Dictionary<Vector3, TileBase>();
-
-            for (int x = tileMap.cellBounds.min.x; x < tileMap.cellBounds.max.x; x++)
-            {
-                for (int y = tileMap.cellBounds.min.y; y < tileMap.cellBounds.max.y; y++)
-                {
-                    TileBase tile = tileMap.GetTile<TileBase>(new Vector3Int(x, y));
-
-                    if (tile != null)
-                    {
-                        returnTiles.Add(tileMap.CellToWorld(new Vector3Int(x, y)), tile);
-                    }
-                }
-            }
-
-            return returnTiles;
-        }
+        public Dictionary<Vector3, TileBase> GetGroundTiles() => Utilities.GetTilesInMap(TileMap);
 
         public void SpawnLevelExit(GameObject exit)
         {

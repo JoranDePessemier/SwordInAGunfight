@@ -7,7 +7,18 @@ namespace WaveFunctionCollapse
     public class Cell : MonoBehaviour
     {
         public bool Collapsed { get; set; }
-        public Tile[] TileOptions { get; private set; } 
+
+        public int AmountOfOpenNeighBours { get;set; }
+
+        public Tile[] TileOptions { get; private set; }
+
+        [SerializeField]
+        private TextMesh _optionsText;
+
+        [SerializeField]
+        private TextMesh _openNeighBoursText;
+
+        public Tile InstantiatedTile { get; set; }
 
         public void CreateCell(bool collapseState, Tile[] tiles)
         {
@@ -22,18 +33,19 @@ namespace WaveFunctionCollapse
 
         private void Update()
         {
-            TextMesh text = this.GetComponentInChildren<TextMesh>();
 
-            text.text = TileOptions.Length.ToString();
+            _optionsText.text = TileOptions.Length.ToString();
             
             if(Collapsed)
             {
-                text.color = Color.red;
+                _optionsText.color = Color.red;
             }
             else
             {
-                text.color = Color.green;
+                _optionsText.color = Color.green;
             }
+
+            _openNeighBoursText.text = AmountOfOpenNeighBours.ToString();
         }
     }
 }

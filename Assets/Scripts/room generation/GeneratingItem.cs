@@ -1,7 +1,5 @@
 using UnityEngine;
 
-namespace RoomGeneration
-{
     [System.Serializable ]
     public struct GeneratingItem
     {
@@ -24,6 +22,6 @@ namespace RoomGeneration
         }
 
     }
-}
+
 
 

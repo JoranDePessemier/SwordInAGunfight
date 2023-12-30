@@ -184,10 +184,7 @@ namespace RoomGeneration
             {
                 Dictionary<Vector3, TileBase> tiles = room.GetGroundTiles();
 
-                foreach (KeyValuePair<Vector3, TileBase> tile in tiles)
-                {
-                    _groundCombinedMap.SetTile(_groundCombinedMap.WorldToCell(tile.Key), tile.Value);
-                }
+                Utilities.AddTilesToTileMap(ref _groundCombinedMap, tiles);
 
                 Destroy(room.GroundMap.gameObject);
             }
@@ -213,10 +210,7 @@ namespace RoomGeneration
             {
                 Dictionary<Vector3, TileBase> tiles = room.GetRoomTiles();
 
-                foreach (KeyValuePair<Vector3, TileBase> tile in tiles)
-                {
-                    _tilesCombinedMap.SetTile(_tilesCombinedMap.WorldToCell(tile.Key), tile.Value);
-                }
+                Utilities.AddTilesToTileMap(ref _tilesCombinedMap, tiles);
 
                 Destroy(room.TileMap.gameObject);
             }

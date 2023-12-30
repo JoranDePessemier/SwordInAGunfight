@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace WaveFunctionCollapse
 {
@@ -15,7 +17,7 @@ namespace WaveFunctionCollapse
 
     public class WaveFunction : MonoBehaviour
     {
-
+        [Header("CellValues")]
         [SerializeField]
         private Vector2Int _dimensions;
 
@@ -25,14 +27,37 @@ namespace WaveFunctionCollapse
         [SerializeField]
         private Cell _cellObject;
 
+        [Header("TileObjects")]
         [SerializeField]
         private Tile[] _randomTileOptions;
+
+        [SerializeField]
+        private Tile[] _oneOpeningTileOptions;
 
         [SerializeField]
         private Tile _spawnTile;
 
         [SerializeField]
         private Tile _borderTile;
+
+        [Header("TileMaps")]
+        [SerializeField]
+        private Tilemap _wallMap;
+
+        [SerializeField]
+        private Tilemap _groundMap;
+
+        [Header("Enemies")]
+        [SerializeField]
+        private GeneratingItem[] _enemies;
+
+        [Header("Pickups")]
+        [SerializeField]
+        private GeneratingItem[] _pickups;
+
+        [Header("Exit")]
+        [SerializeField]
+        private GameObject _levelExit;
 
         private Dictionary<Vector2Int,Cell> _gridComponents = new Dictionary<Vector2Int, Cell> ();
 
@@ -68,10 +93,16 @@ namespace WaveFunctionCollapse
 
             while (!AllCellsCollapsed)
             {
-                yield return new WaitForSeconds(0.05f);
                 CollapseCell(CheckEntropy());
+                yield return new WaitForSeconds(0.05f);
                 _gridComponents = UpdateGeneration();
             }
+
+            CombineTiles();
+            SpawnEnemies();
+            SpawnPickups();
+            SpawnExit();
+            DestroyGeneratedObjects();
         }
 
         private void PlaceBorderRooms()
@@ -106,6 +137,11 @@ namespace WaveFunctionCollapse
                 _allTileObjects.Add(tile);
             }
 
+            foreach(Tile tile in _oneOpeningTileOptions)
+            {
+                _allTileObjects.Add(tile);
+            }
+
             for (int i = 0; i < _allTileObjects.Count; i++)
             {
                 Tile tile = _allTileObjects[i];
@@ -127,19 +163,45 @@ namespace WaveFunctionCollapse
 
         private List<Cell> CheckEntropy()
         {
-            List<Cell> returnGrid = new List<Cell>(_gridComponents.Values);
+            List<Cell> returnList = new List<Cell>(_gridComponents.Values);
 
-            //Sort all uncollapsed cells based on the tileoptionlength
-            returnGrid.RemoveAll(c => c.Collapsed);
-            returnGrid.Sort((a, b) => { return a.TileOptions.Length - b.TileOptions.Length; });
+            //Sort all uncollapsed cells based on the open neighbours
+            returnList.RemoveAll(c => c.Collapsed);
+            returnList.Sort((a, b) => { return b.AmountOfOpenNeighBours - a.AmountOfOpenNeighBours; });
 
-            //keep only cells with a long tileoptionlength
-            int arrayLength = returnGrid[0].TileOptions.Length;
+            int maxOpenNeighBours = returnList[0].TileOptions.Length;
+
+            if(maxOpenNeighBours <= 0)
+            {
+                return null;
+            }
+
+            int openNeighBourStopIndex = default;
+
+            for (int i = 1; i < returnList.Count; i++)
+            {
+                if (returnList[i].AmountOfOpenNeighBours < maxOpenNeighBours)
+                {
+                    openNeighBourStopIndex = i;
+                    break;
+                }
+            }
+
+            if (openNeighBourStopIndex > 0)
+            {
+                returnList.RemoveRange(openNeighBourStopIndex, returnList.Count - openNeighBourStopIndex);
+            }
+
+
+            returnList.Sort((a, b) => { return a.TileOptions.Length - b.TileOptions.Length; });
+
+            //keep only cells with a short tileoptionlength
+            int arrayLength = returnList[0].TileOptions.Length;
             int stopIndex = default;
 
-            for (int i = 1; i < returnGrid.Count; i++)
+            for (int i = 1; i < returnList.Count; i++)
             {
-                if (returnGrid[i].TileOptions.Length > arrayLength)
+                if (returnList[i].TileOptions.Length > arrayLength)
                 {
                     stopIndex = i;
                     break;
@@ -148,23 +210,73 @@ namespace WaveFunctionCollapse
 
             if(stopIndex > 0)
             {
-                returnGrid.RemoveRange(stopIndex, returnGrid.Count - stopIndex);
+                returnList.RemoveRange(stopIndex, returnList.Count - stopIndex);
             }
 
-            return returnGrid;
+            return returnList;
+        }
+
+        private int GetOpenNeighBours(Vector2Int gridCoordinates, out List<Direction> openDirections)
+        {
+            int openCount = 0;
+
+            openDirections = new List<Direction>();
+
+            if (gridCoordinates.y > 0 && CheckOpenDirection(new Vector2Int(gridCoordinates.x, gridCoordinates.y - 1), Direction.Up))
+            {
+                openCount++;
+                openDirections.Add(Direction.Down);
+            }
+            if (gridCoordinates.y < _dimensions.y - 1 &&  CheckOpenDirection(new Vector2Int(gridCoordinates.x, gridCoordinates.y + 1), Direction.Down))
+            {
+                openCount++;
+                openDirections.Add(Direction.Up);
+            }
+            if (gridCoordinates.x > 0 && CheckOpenDirection(new Vector2Int(gridCoordinates.x - 1, gridCoordinates.y), Direction.Right))
+            {
+                openCount++;
+                openDirections.Add(Direction.Left);
+            }
+            if (gridCoordinates.x < _dimensions.x -1  && CheckOpenDirection(new Vector2Int(gridCoordinates.x + 1, gridCoordinates.y), Direction.Left))
+            {
+                openCount++;
+                openDirections.Add(Direction.Right);
+            }
+
+            return openCount;
+        }
+
+        private bool CheckOpenDirection( Vector2Int gridCoordinates, Direction oppositeDirection)
+        {
+            Cell cell = _gridComponents[gridCoordinates];
+            return cell.Collapsed && cell.TileOptions[0].OpenDirections.Contains(oppositeDirection);
         }
 
         private void CollapseCell(List<Cell> grid)
         {
-            Cell cellToCollapse = grid[UnityEngine.Random.Range(0,grid.Count)];
+            if(grid == null)
+            {
+                CollapseAllRemaining();
+                return;
+            }
 
-            cellToCollapse.Collapsed = true;
+            Cell cellToCollapse = grid[UnityEngine.Random.Range(0,grid.Count)];
 
             Tile selectedTile = cellToCollapse.TileOptions[UnityEngine.Random.Range(0, cellToCollapse.TileOptions.Length)];
             cellToCollapse.RecreateCell(new Tile[] { selectedTile });
 
-            Tile foundTile = cellToCollapse.TileOptions[0];
-            Instantiate(foundTile, cellToCollapse.transform.position, Quaternion.identity);
+            CollapseSpecificCell(cellToCollapse, selectedTile);
+        }
+
+        private void CollapseAllRemaining()
+        {
+            foreach(Cell cell in _gridComponents.Values)
+            {
+                if (!cell.Collapsed)
+                {
+                    CollapseSpecificCell(cell, _borderTile);
+                }
+            }
         }
 
         private void CollapseSpecificCell(Cell cellToCollapse, Tile collapsingTile)
@@ -174,7 +286,9 @@ namespace WaveFunctionCollapse
             cellToCollapse.RecreateCell(new Tile[] { collapsingTile});
 
             Tile foundTile = cellToCollapse.TileOptions[0];
-            Instantiate(foundTile, cellToCollapse.transform.position, Quaternion.identity);
+            Tile instance = Instantiate(foundTile, cellToCollapse.transform.position, Quaternion.identity);
+
+            cellToCollapse.InstantiatedTile = instance;
         }
 
         private Dictionary<Vector2Int,Cell> UpdateGeneration()
@@ -225,6 +339,20 @@ namespace WaveFunctionCollapse
                             ChangeCellOptions(new Vector2Int(x - 1, y), Direction.Left, options);
                         }
 
+                        if(options.Count <= 0 && GetOpenNeighBours(key,out List<Direction> directions) == 1)
+                        {
+                            Direction direction = directions[0];
+
+                            foreach(Tile tile in _allTileObjects)
+                            {
+                                if(tile.OpenDirections.Length == 1 && tile.OpenDirections[0] == direction)
+                                {
+                                    options.Add(tile);
+                                }
+                            }
+                        }
+
+
                         Tile[] newTileArray = new Tile[options.Count];
 
 
@@ -234,6 +362,7 @@ namespace WaveFunctionCollapse
                         }
 
                         newGenerationCell[key].RecreateCell(newTileArray);
+                        newGenerationCell[key].AmountOfOpenNeighBours = GetOpenNeighBours(key, out List<Direction> directionList);
                     }
                 }
             }
@@ -282,6 +411,110 @@ namespace WaveFunctionCollapse
                     optionList.RemoveAt(i);
                 }
             }
+        }
+
+        private void CombineTiles()
+        {
+            foreach(Cell cell in _gridComponents.Values)
+            {
+                Utilities.AddTilesToTileMap(ref _groundMap, cell.InstantiatedTile.GroundTiles);
+                Utilities.AddTilesToTileMap(ref _wallMap, cell.InstantiatedTile.WallTiles);
+            }
+        }
+
+        private void DestroyGeneratedObjects()
+        {
+            foreach(Cell cell in _gridComponents.Values)
+            {
+                Destroy(cell.InstantiatedTile.gameObject);
+                Destroy(cell.gameObject);
+            }
+        }
+
+        private void SpawnEnemies()
+        {
+            List<Tile> availableEnemyTiles = new List<Tile>();
+
+            foreach(Cell cell in _gridComponents.Values)
+            {
+                availableEnemyTiles.Add(cell.InstantiatedTile);
+            }
+
+            foreach (GeneratingItem item in _enemies)
+            {
+                int amountGenerated = 0;
+
+                while (amountGenerated <= item.AmountToGenerate && availableEnemyTiles.Count > 0)
+                {
+                    Tile spawnTile = availableEnemyTiles[UnityEngine.Random.Range(0, availableEnemyTiles.Count)];
+
+                    if (spawnTile.SpawnEnemy(item.Item) != null)
+                    {
+                        amountGenerated++;
+                    }
+                    else
+                    {
+                        availableEnemyTiles.Remove(spawnTile);
+                    }
+                }
+            }
+        }
+
+        private void SpawnPickups()
+        {
+            List<Tile> availablePickupTiles = new List<Tile>();
+
+            foreach (Cell cell in _gridComponents.Values)
+            {
+                availablePickupTiles.Add(cell.InstantiatedTile);
+            }
+
+            foreach (GeneratingItem item in _pickups)
+            {
+                int amountGenerated = 0;
+
+                while (amountGenerated <= item.AmountToGenerate && availablePickupTiles.Count > 0)
+                {
+                    Tile spawnTile = availablePickupTiles[UnityEngine.Random.Range(0, availablePickupTiles.Count)];
+
+                    if (spawnTile.SpawnPickup(item.Item) != null)
+                    {
+                        amountGenerated++;
+                    }
+                    else
+                    {
+                        availablePickupTiles.Remove(spawnTile);
+                    }
+                }
+            }
+
+        }
+
+        private void SpawnExit()
+        {
+            Vector2Int randomCoords = Vector2Int.zero;
+            int borderIndex = UnityEngine.Random.Range(0, 3);
+
+            switch (borderIndex)
+            {
+                case 0:
+                    randomCoords = new Vector2Int(UnityEngine.Random.Range(1,_dimensions.x - 1), _dimensions.y - 2);
+                    break;
+                
+                case 1:
+                    randomCoords = new Vector2Int(UnityEngine.Random.Range(1, _dimensions.x - 1), 1);
+                    break;
+
+                case 2:
+                    randomCoords = new Vector2Int(_dimensions.x - 2, UnityEngine.Random.Range(1, _dimensions.y - 1));
+                    break;
+
+                case 3:
+                    randomCoords = new Vector2Int(1, UnityEngine.Random.Range(1, _dimensions.y - 1));
+                    break;
+            }
+
+            _gridComponents[randomCoords].InstantiatedTile.SpawnLevelExit(_levelExit);
         }
     }
 }
