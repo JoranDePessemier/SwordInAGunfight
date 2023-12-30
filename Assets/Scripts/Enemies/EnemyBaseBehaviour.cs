@@ -3,6 +3,7 @@ using RoomGeneration;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public enum EnemyState
@@ -61,6 +62,10 @@ public class EnemyBaseBehaviour : MonoBehaviour
 
     [SerializeField]
     private AttackPart[] _attack;
+
+    [Header("Visuals")]
+    [SerializeField]
+    private SpriteRenderer _renderer;
 
     private bool _isAttacking;
 
@@ -168,6 +173,15 @@ public class EnemyBaseBehaviour : MonoBehaviour
         else
         {
             IsAttacking = false;
+        }
+
+        if(_path.desiredVelocity.x < 0)
+        {
+            _renderer.flipX = true;
+        }
+        else
+        {
+            _renderer.flipX = false;
         }
     }
 
