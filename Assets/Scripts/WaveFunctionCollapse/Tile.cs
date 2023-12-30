@@ -16,6 +16,10 @@ namespace WaveFunctionCollapse
 
         public void SetAllNeighBours(Tile[] options)
         {
+            UpNeighbours.Clear();
+            DownNeighbours.Clear();
+            RightNeighbours.Clear();
+            LeftNeighbours.Clear();
             SetNeighBoursforDirection(Direction.Up,Direction.Down,UpNeighbours,options);
             SetNeighBoursforDirection(Direction.Down, Direction.Up, DownNeighbours, options);
             SetNeighBoursforDirection(Direction.Right, Direction.Left, RightNeighbours, options);

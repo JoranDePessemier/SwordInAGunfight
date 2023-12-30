@@ -31,4 +31,13 @@ public static class Utilities
 
         return returnCollection;    
     }
+
+    public static Vector2 AddAngleToVector(Vector2 vector, float angle)
+    {
+        float angleRadians = Mathf.Deg2Rad * angle;
+        float cos = Mathf.Cos(angleRadians);
+        float sin = Mathf.Sin(angleRadians);
+
+        return new Vector2(vector.x * cos - vector.y * sin, vector.x * sin + vector.y * cos);
+    }
 }

@@ -312,6 +312,14 @@ MonoBehaviour:
   _minMaxRunTowardsSpeed: {x: 3, y: 4}
   _knockBackSpeed: 0
   _knockBackTime: 0
+  _minMaxTimeBetweenAttack: {x: 1, y: 1}
+  _attack:
+  - _projectile: {fileID: 1219814789380283562, guid: 03db89aaa2a791846829c0d60cab8dce, type: 3}
+    _timeAfterLastPart: 0
+    _projectileSpeed: 5
+    _minAngle: 0
+    _maxAngle: 0
+    _setBaseAngleTowardsPlayer: 1
 --- !u!1 &7662546978583602840
 GameObject:
   m_ObjectHideFlags: 0

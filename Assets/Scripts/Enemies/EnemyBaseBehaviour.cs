@@ -1,4 +1,5 @@
 using Pathfinding;
+using RoomGeneration;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -53,6 +54,36 @@ public class EnemyBaseBehaviour : MonoBehaviour
 
     [SerializeField]
     private float _knockBackTime;
+
+    [Header("Attack")]
+    [SerializeField]
+    private Vector2 _minMaxTimeBetweenAttack;
+
+    [SerializeField]
+    private AttackPart[] _attack;
+
+    private bool _isAttacking;
+
+    public bool IsAttacking
+    {
+        get
+        {
+            return _isAttacking;
+        }
+        set
+        {
+            if(value == _isAttacking) return;
+
+            _isAttacking = value;
+
+            if (value == true)
+            {
+                StartAttackTimer();
+            }
+        }
+    }
+
+    private int _currentAttackIndex;
 
     private Transform _destination;
 
@@ -109,6 +140,8 @@ public class EnemyBaseBehaviour : MonoBehaviour
 
     private void Update()
     {
+        EnemyState distanceState = GetStateBasedOnDistance();
+
         _inverseTargetRotator.LookAt(Target);
 
         if(_destination != null)
@@ -120,12 +153,21 @@ public class EnemyBaseBehaviour : MonoBehaviour
         switch (State)
         {
             case EnemyState.Standing:
-                State = GetStateBasedOnDistance();
+                State = distanceState;
                 break;
 
             case EnemyState.RunTowards:
-                State = GetStateBasedOnDistance();
+                State = distanceState;
                 break;
+        }
+
+        if(distanceState != EnemyState.Standing)
+        {
+            IsAttacking = true;
+        }
+        else
+        {
+            IsAttacking = false;
         }
     }
 
@@ -172,5 +214,51 @@ public class EnemyBaseBehaviour : MonoBehaviour
         StartCoroutine(Utilities.WaitForTime(_knockBackTime, () => { _state = EnemyState.Standing; }));
     }
 
+    private void StartAttackTimer()
+    {
+        if (!_isAttacking)
+        {
+            return;
+        }
 
+        _currentAttackIndex = 0;
+        StartCoroutine(Utilities.WaitForTime(Random.Range(_minMaxTimeBetweenAttack.x, _minMaxTimeBetweenAttack.y),Attack));
+    }
+
+    private void Attack()
+    {
+        StartCoroutine(Utilities.WaitForTime(_attack[_currentAttackIndex].TimeAfterLastPart, () =>
+        {
+            FireProjectile(_attack[_currentAttackIndex]);
+
+            if(_currentAttackIndex + 1 < _attack.Length)
+            {
+                _currentAttackIndex++;
+                Attack();
+            }
+            else
+            {
+                StartAttackTimer();
+            }
+        }
+        ));
+    }
+
+    private void FireProjectile(AttackPart attackPart)
+    {
+
+        BulletBase bullet = Instantiate(attackPart.Projectile, _transform.position, Quaternion.identity);
+
+        int randomAngleOffset = Random.Range(attackPart.MinMaxAngle.x,attackPart.MinMaxAngle.y);
+        Vector2 direction = Vector2.right;
+
+        if (attackPart.SetBaseAngleTowardsPlayer)
+        {
+            direction = (Target.position - _transform.position).normalized;
+        }
+
+        direction = Utilities.AddAngleToVector(direction, randomAngleOffset).normalized;
+
+        bullet.Fire(direction, attackPart.ProjectileSpeed);
+    }
 }

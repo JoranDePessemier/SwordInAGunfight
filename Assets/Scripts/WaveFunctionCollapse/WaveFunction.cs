@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace WaveFunctionCollapse
@@ -24,25 +26,47 @@ namespace WaveFunctionCollapse
         private Cell _cellObject;
 
         [SerializeField]
-        private Tile[] _tilePrefabs;
+        private Tile[] _randomTileOptions;
 
+        [SerializeField]
+        private Tile _spawnTile;
 
-        private List<Tile> _tileObjects = new List<Tile>();
+        [SerializeField]
+        private Tile _borderTile;
 
         private Dictionary<Vector2Int,Cell> _gridComponents = new Dictionary<Vector2Int, Cell> ();
 
+        private List<Tile> _allTileObjects = new List<Tile>();
+
+        private bool AllCellsCollapsed
+        {
+            get
+            {
+                foreach(Cell cell in _gridComponents.Values)
+                {
+                    if(!cell.Collapsed)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        }
+
         private void Awake()
         {
-            _tileObjects = new List<Tile>(_tilePrefabs);
-
             InitialiseGrid();
             StartCoroutine(Generate());
-
         }
 
         private IEnumerator Generate()
         {
-            for (int i = 0; i < _dimensions.x * _dimensions.y; i++)
+            PlaceBorderRooms();
+            PlaceSpawnRoom();
+            _gridComponents = UpdateGeneration();
+
+            while (!AllCellsCollapsed)
             {
                 yield return new WaitForSeconds(0.05f);
                 CollapseCell(CheckEntropy());
@@ -50,13 +74,43 @@ namespace WaveFunctionCollapse
             }
         }
 
+        private void PlaceBorderRooms()
+        {
+            _borderTile.SetAllNeighBours(_randomTileOptions);
+            _allTileObjects.Add(_borderTile);
+            
+            for (int y = 0; y < _dimensions.y; y++)
+            {
+                for (int x = 0; x < _dimensions.x; x++)
+                {
+                    if(x == 0 || y == 0 || x == _dimensions.x - 1 || y == _dimensions.y - 1)
+                    {
+                        CollapseSpecificCell(_gridComponents[new Vector2Int(x, y)],_borderTile);
+                    }
+                }
+            }
+        }
+
+        private void PlaceSpawnRoom()
+        {
+            _spawnTile.SetAllNeighBours(_randomTileOptions);
+            _allTileObjects.Add(_spawnTile);
+            Vector2Int spawnCoords = _dimensions / 2;
+            CollapseSpecificCell(_gridComponents[spawnCoords],_spawnTile);
+        }
+
         private void InitialiseGrid()
         {
-            for (int i = 0; i < _tileObjects.Count; i++)
+            foreach(Tile tile in _randomTileOptions)
             {
-                Tile tile = _tileObjects[i];
-                tile.SetAllNeighBours(_tileObjects.ToArray());
-                _tileObjects[i] = tile;
+                _allTileObjects.Add(tile);
+            }
+
+            for (int i = 0; i < _allTileObjects.Count; i++)
+            {
+                Tile tile = _allTileObjects[i];
+                tile.SetAllNeighBours(_randomTileOptions);
+                _allTileObjects[i] = tile;
             }
 
             for (int y = 0; y < _dimensions.y; y++)
@@ -64,7 +118,7 @@ namespace WaveFunctionCollapse
                 for (int x = 0; x < _dimensions.x; x++)
                 {
                     Cell newcell = Instantiate(_cellObject, new Vector2(x * _cellSize, y * _cellSize),Quaternion.identity);
-                    newcell.CreateCell(false, _tileObjects.ToArray());
+                    newcell.CreateCell(false, _allTileObjects.ToArray());
                     _gridComponents.Add(new Vector2Int(x,y),newcell);
                 }
             }
@@ -113,6 +167,16 @@ namespace WaveFunctionCollapse
             Instantiate(foundTile, cellToCollapse.transform.position, Quaternion.identity);
         }
 
+        private void CollapseSpecificCell(Cell cellToCollapse, Tile collapsingTile)
+        {
+            cellToCollapse.Collapsed = true;
+
+            cellToCollapse.RecreateCell(new Tile[] { collapsingTile});
+
+            Tile foundTile = cellToCollapse.TileOptions[0];
+            Instantiate(foundTile, cellToCollapse.transform.position, Quaternion.identity);
+        }
+
         private Dictionary<Vector2Int,Cell> UpdateGeneration()
         {
             Dictionary<Vector2Int, Cell > newGenerationCell = new Dictionary<Vector2Int, Cell>(_gridComponents);
@@ -131,7 +195,7 @@ namespace WaveFunctionCollapse
                     {
                         List<Tile> options = new List<Tile>();
 
-                        foreach (Tile tile in _tileObjects)
+                        foreach (Tile tile in _allTileObjects)
                         {
                             options.Add(tile);
                         }
@@ -184,21 +248,21 @@ namespace WaveFunctionCollapse
 
             foreach (Tile possibleOption in cell.TileOptions)
             {
-                int validOptionIndex = Array.FindIndex(_tileObjects.ToArray(), obj => obj == possibleOption);
+                int validOptionIndex = Array.FindIndex(_allTileObjects.ToArray(), obj => obj == possibleOption);
 
                 switch (direction)
                 {
                     case Direction.Up:
-                        validOptions.AddRange(_tileObjects[validOptionIndex].UpNeighbours);
+                        validOptions.AddRange(_allTileObjects[validOptionIndex].UpNeighbours);
                         break;
                     case Direction.Down:
-                        validOptions.AddRange(_tileObjects[validOptionIndex].DownNeighbours);
+                        validOptions.AddRange(_allTileObjects[validOptionIndex].DownNeighbours);
                         break;
                     case Direction.Left:
-                        validOptions.AddRange(_tileObjects[validOptionIndex].RightNeighbours);
+                        validOptions.AddRange(_allTileObjects[validOptionIndex].RightNeighbours);
                         break;
                     case Direction.Right:
-                        validOptions.AddRange(_tileObjects[validOptionIndex].LeftNeighbours);
+                        validOptions.AddRange(_allTileObjects[validOptionIndex].LeftNeighbours);
                         break;
                 }
 

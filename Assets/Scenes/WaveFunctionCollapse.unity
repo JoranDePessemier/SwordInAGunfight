@@ -521,10 +521,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ca71cace6aaa1945a013b6f1cf9d78d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dimensions: {x: 30, y: 30}
+  _dimensions: {x: 11, y: 11}
   _cellSize: 10
   _cellObject: {fileID: 5708984352104248064, guid: 73b67e2e8690f4946938d3f60b89c2fe, type: 3}
-  _tilePrefabs:
+  _randomTileOptions:
   - {fileID: 5015635019259778367, guid: 7f3e3a5125834a64cac2391bb26259e6, type: 3}
   - {fileID: 1139465321412524363, guid: cc9fbdb9bf447dc46ac3b88e2695ffda, type: 3}
   - {fileID: 6298517519712713824, guid: 2c06eb480225c1446b003d6e11cf2050, type: 3}
@@ -536,10 +536,8 @@ MonoBehaviour:
   - {fileID: 8049309847329296242, guid: 267487d255d162e49b01d2f526d15c36, type: 3}
   - {fileID: 3149815198450419144, guid: 2cda64f44b0cd8a439fa445962da6d2e, type: 3}
   - {fileID: 7383975033934858410, guid: 7df4e67ff59bef84eae70ba68140bcc5, type: 3}
-  - {fileID: 2697952172698819449, guid: a2d5293de80e51b499739fa16e2f8a55, type: 3}
-  - {fileID: 225468895770103455, guid: 3716ad77bdf0d8b4aa7816625c88da6c, type: 3}
-  - {fileID: 3918937029574587632, guid: a0741f200786df64493a37f441ea9d91, type: 3}
-  - {fileID: 7520489763415349590, guid: 99d1a49b9d0abe74fab4ef219362ff0d, type: 3}
+  _spawnTile: {fileID: 5626127324441011068, guid: 10ab3ac409ae1cf4083143b1f9c2a0ac, type: 3}
+  _borderTile: {fileID: 919697432637137056, guid: fa79f9281c84351409d0d34906d63db8, type: 3}
 --- !u!1 &870716221
 GameObject:
   m_ObjectHideFlags: 0
@@ -1213,11 +1211,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9027408812224093564, guid: edeaa7396d7f0914a8d21f26c778641e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 9027408812224093564, guid: edeaa7396d7f0914a8d21f26c778641e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 9027408812224093564, guid: edeaa7396d7f0914a8d21f26c778641e, type: 3}
       propertyPath: m_LocalPosition.z
