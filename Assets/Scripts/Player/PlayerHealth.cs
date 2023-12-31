@@ -18,9 +18,6 @@ public class PlayerHealth : MonoBehaviour
 {
     [Header("Values")]
     [SerializeField]
-    public LayerMask _playerDamageLayer;
-
-    [SerializeField]
     private float _invincibilityTime;
 
     [Header("Invincibilityanimation")]
@@ -38,27 +35,14 @@ public class PlayerHealth : MonoBehaviour
 
     public event EventHandler<DamageTakenEventArgs> TakeDamage;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void HitPlayer(int damageToDo)
     {
-        GameObject collisionObject = collision.gameObject;
+        if (!_isDamageable) return;
 
-        if(Utilities.IsInLayerMask(collisionObject, _playerDamageLayer) && _isDamageable)
-        {
-            _isDamageable = false;
-            StartCoroutine(Utilities.WaitForTime(_invincibilityTime, () => { _isDamageable = true; }));
-            
-            if(!collisionObject.TryGetComponent<PlayerDamageable>(out PlayerDamageable damageable))
-            {
-                Debug.LogWarning($"{collisionObject} is on the damage layer but does not have a damageable script attached");
-                return;
-            }
-
-            damageable.Hit();
-
-            SetAlphaLow();
-
-            OnTakeDamage(new DamageTakenEventArgs(damageable.DamageToDo));
-        }
+        _isDamageable = false;
+        StartCoroutine(Utilities.WaitForTime(_invincibilityTime, () => { _isDamageable = true; }));
+        SetAlphaLow();
+        OnTakeDamage(new DamageTakenEventArgs(damageToDo));
     }
 
     private void SetAlphaLow()

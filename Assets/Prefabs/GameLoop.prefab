@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45d831edaf621b24b966d4c44b76b799, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startingPlayerHp: 5
+  _startingPlayerHp: 6
   _startingGameTime: 120

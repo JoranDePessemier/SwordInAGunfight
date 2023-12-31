@@ -12,10 +12,10 @@ TagManager:
   - Water
   - UI
   - Pickup
-  - PlayerDamage
+  - EnemyBullet
   - Enemy
-  - 
-  - 
+  - PlayerBullet
+  - Terrain
   - 
   - 
   - 
@@ -43,6 +43,9 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Bullets
+    uniqueID: 3622241043
     locked: 0
   - name: Character
     uniqueID: 3506564329

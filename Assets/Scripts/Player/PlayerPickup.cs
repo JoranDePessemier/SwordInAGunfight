@@ -25,6 +25,9 @@ public class PlayerPickup : MonoBehaviour
     [SerializeField]
     private LayerMask _pickupLayer;
 
+    [SerializeField]
+    private LayerMask _terrainLayer;
+
     public event EventHandler<PickupAmountEventArgs> PickUpPoints;
 
     private void Awake()
@@ -52,6 +55,11 @@ public class PlayerPickup : MonoBehaviour
         }
 
         if (pickup.StartedPickup)
+            return;
+
+        Transform pickupTransform = pickup.transform;
+
+        if (Physics2D.Raycast(_transform.position, pickupTransform.position, Vector2.Distance(_transform.position, pickupTransform.position), _terrainLayer))
             return;
 
 

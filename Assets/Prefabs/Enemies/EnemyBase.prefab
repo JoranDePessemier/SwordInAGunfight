@@ -161,6 +161,7 @@ GameObject:
   - component: {fileID: 707326006401249102}
   - component: {fileID: 8455776836237952754}
   - component: {fileID: 5892065831764958337}
+  - component: {fileID: 5156538147929184524}
   m_Layer: 8
   m_Name: EnemyBase
   m_TagString: Untagged
@@ -306,13 +307,13 @@ MonoBehaviour:
   _inverseCloseTarget: {fileID: 1792659265627313474}
   _inverseTargetRotator: {fileID: 4965278454077756359}
   _minMaxRunAwayDistance: {x: 3.44, y: 5.86}
-  _minMaxRunAwaySpeed: {x: 2, y: 3}
+  _minMaxRunAwaySpeed: {x: 3, y: 4}
   _minMaxRunAwayTime: {x: 1, y: 3}
   _runTowardsDistance: 11.39
-  _minMaxRunTowardsSpeed: {x: 3, y: 4}
+  _minMaxRunTowardsSpeed: {x: 4, y: 5}
   _knockBackSpeed: 0
   _knockBackTime: 0
-  _minMaxTimeBetweenAttack: {x: 1, y: 1}
+  _minMaxTimeBetweenAttack: {x: 1, y: 2}
   _attack:
   - _projectile: {fileID: 1219814789380283562, guid: 03db89aaa2a791846829c0d60cab8dce, type: 3}
     _timeAfterLastPart: 0
@@ -321,6 +322,28 @@ MonoBehaviour:
     _maxAngle: 0
     _setBaseAngleTowardsPlayer: 1
   _renderer: {fileID: 9034433325267267455}
+--- !u!114 &5156538147929184524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7486475574420756518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f38dee4783864f044a3ed39157c4c70d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startingHealth: 1
+  _pickupsToDrop:
+  - _item: {fileID: 607439264270521830, guid: 0416a49b05fe65a49bf5381294749a9c, type: 3}
+    _amountToGenerate: 2
+  _pickupDropRadius: 2
+  _pickupDropMovementTime: 1
+  _pickupDropMovementType: 15
+  _terrainLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!1 &7662546978583602840
 GameObject:
   m_ObjectHideFlags: 0
