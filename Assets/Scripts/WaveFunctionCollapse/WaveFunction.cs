@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 
 namespace WaveFunctionCollapse
@@ -93,8 +94,8 @@ namespace WaveFunctionCollapse
 
             while (!AllCellsCollapsed)
             {
+                yield return new WaitForSeconds(0.1f);
                 CollapseCell(CheckEntropy());
-                yield return new WaitForSeconds(0.05f);
                 _gridComponents = UpdateGeneration();
             }
 
@@ -169,7 +170,7 @@ namespace WaveFunctionCollapse
             returnList.RemoveAll(c => c.Collapsed);
             returnList.Sort((a, b) => { return b.AmountOfOpenNeighBours - a.AmountOfOpenNeighBours; });
 
-            int maxOpenNeighBours = returnList[0].TileOptions.Length;
+            int maxOpenNeighBours = returnList[0].AmountOfOpenNeighBours;
 
             if(maxOpenNeighBours <= 0)
             {
@@ -254,18 +255,52 @@ namespace WaveFunctionCollapse
 
         private void CollapseCell(List<Cell> grid)
         {
-            if(grid == null)
+            if (grid == null)
             {
                 CollapseAllRemaining();
                 return;
             }
 
-            Cell cellToCollapse = grid[UnityEngine.Random.Range(0,grid.Count)];
+
+            Cell cellToCollapse = grid[UnityEngine.Random.Range(0, grid.Count)];
+
+            SetNewOptionsOnZero(cellToCollapse);
 
             Tile selectedTile = cellToCollapse.TileOptions[UnityEngine.Random.Range(0, cellToCollapse.TileOptions.Length)];
             cellToCollapse.RecreateCell(new Tile[] { selectedTile });
 
             CollapseSpecificCell(cellToCollapse, selectedTile);
+        }
+
+        private void SetNewOptionsOnZero(Cell cellToCollapse)
+        {
+            if (cellToCollapse.TileOptions.Length <= 0)
+            {
+                List<Tile> newTileOptions = new List<Tile>();
+                Vector2Int key = Vector2Int.zero;
+
+                foreach (KeyValuePair<Vector2Int, Cell> cell in _gridComponents)
+                {
+                    if (cell.Value == cellToCollapse)
+                    {
+                        key = cell.Key;
+                    }
+                }
+
+                if (GetOpenNeighBours(key, out List<Direction> directions) == 1)
+                {
+                    Direction direction = directions[0];
+
+                    foreach (Tile tile in _allTileObjects)
+                    {
+                        if (tile.OpenDirections.Length == 1 && tile.OpenDirections[0] == direction)
+                        {
+                            newTileOptions.Add(tile);
+                        }
+                    }
+                }
+                cellToCollapse.RecreateCell(newTileOptions.ToArray());
+            }
         }
 
         private void CollapseAllRemaining()
@@ -315,7 +350,7 @@ namespace WaveFunctionCollapse
                         }
 
 
-                        //Update up
+                        //Update down
                         if (y > 0)
                         {
                             ChangeCellOptions(new Vector2Int(x, y - 1), Direction.Up, options);
@@ -327,7 +362,7 @@ namespace WaveFunctionCollapse
                             ChangeCellOptions(new Vector2Int(x + 1, y), Direction.Right, options);
                         }
 
-                        //Update down
+                        //Update up
                         if (y < _dimensions.y - 1)
                         {
                             ChangeCellOptions(new Vector2Int(x, y + 1), Direction.Down, options);
@@ -339,22 +374,7 @@ namespace WaveFunctionCollapse
                             ChangeCellOptions(new Vector2Int(x - 1, y), Direction.Left, options);
                         }
 
-                        if(options.Count <= 0 && GetOpenNeighBours(key,out List<Direction> directions) == 1)
-                        {
-                            Direction direction = directions[0];
-
-                            foreach(Tile tile in _allTileObjects)
-                            {
-                                if(tile.OpenDirections.Length == 1 && tile.OpenDirections[0] == direction)
-                                {
-                                    options.Add(tile);
-                                }
-                            }
-                        }
-
-
                         Tile[] newTileArray = new Tile[options.Count];
-
 
                         for (int i = 0; i < options.Count; i++)
                         {
@@ -373,6 +393,10 @@ namespace WaveFunctionCollapse
         private void ChangeCellOptions(Vector2Int coordinates,Direction direction ,List<Tile> options)
         {
             Cell cell = _gridComponents[coordinates];
+
+            if (!cell.Collapsed)
+                return;
+
             List<Tile> validOptions = new List<Tile>();
 
             foreach (Tile possibleOption in cell.TileOptions)
@@ -514,7 +538,31 @@ namespace WaveFunctionCollapse
                     break;
             }
 
-            _gridComponents[randomCoords].InstantiatedTile.SpawnLevelExit(_levelExit);
+            while (_gridComponents[randomCoords].InstantiatedTile.SpawnLevelExit(_levelExit) == null)
+            {
+                borderIndex = UnityEngine.Random.Range(0, 3);
+
+                switch (borderIndex)
+                {
+                    case 0:
+                        randomCoords.x -= 1;
+                        break;
+
+                    case 1:
+                        randomCoords.x += 1;
+                        break;
+
+                    case 2:
+                        randomCoords.y -= 1;
+                        break;
+
+                    case 3:
+                        randomCoords.y += 1;
+                        break;
+                }
+
+                randomCoords = new Vector2Int(Mathf.Clamp(randomCoords.x, 1, _dimensions.x - 2), Mathf.Clamp(randomCoords.y, 1, _dimensions.y - 2));
+            }
         }
     }
 }

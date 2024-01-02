@@ -172,7 +172,7 @@ namespace RoomGeneration
         private void SetAstar()
         {
             var graph = AstarPath.active.data.gridGraph;
-            graph.center = new Vector3(_groundCombinedMap.cellBounds.center.x + _boundaryWallBuffer / 2, _groundCombinedMap.cellBounds.center.y + _boundaryWallBuffer / 2);
+            graph.center = graph.center +  new Vector3(_groundCombinedMap.cellBounds.center.x + _boundaryWallBuffer / 2, _groundCombinedMap.cellBounds.center.y + _boundaryWallBuffer / 2);
             graph.SetDimensions((int)(_groundCombinedMap.cellBounds.size.x / graph.nodeSize) + _boundaryWallBuffer, (int)(_groundCombinedMap.size.y / graph.nodeSize) + _boundaryWallBuffer, graph.nodeSize);
 
             AstarPath.active.Scan();

@@ -136,9 +136,12 @@ namespace WaveFunctionCollapse
             return spawnedPickup;
         }
 
-        public void SpawnLevelExit(GameObject exit)
+        public GameObject SpawnLevelExit(GameObject exit)
         {
-            GameObject.Instantiate(exit, _levelExitSpawn.position, _levelExitSpawn.rotation);
+            if (_levelExitSpawn == null)
+                return null;
+
+            return GameObject.Instantiate(exit, _levelExitSpawn.position, _levelExitSpawn.rotation);
         }
     }
 

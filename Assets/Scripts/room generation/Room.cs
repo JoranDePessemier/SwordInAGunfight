@@ -180,9 +180,9 @@ namespace RoomGeneration
 
         public void RemoveLeftTiles() => RemoveTiles(_leftTiles);
 
-        public Dictionary<Vector3, TileBase> GetRoomTiles() => Utilities.GetTilesInMap(GroundMap);
+        public Dictionary<Vector3, TileBase> GetRoomTiles() => Utilities.GetTilesInMap(TileMap);
 
-        public Dictionary<Vector3, TileBase> GetGroundTiles() => Utilities.GetTilesInMap(TileMap);
+        public Dictionary<Vector3, TileBase> GetGroundTiles() => Utilities.GetTilesInMap(GroundMap);
 
         public void SpawnLevelExit(GameObject exit)
         {
