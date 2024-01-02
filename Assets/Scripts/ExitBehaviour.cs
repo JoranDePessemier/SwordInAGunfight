@@ -9,10 +9,15 @@ public class ExitBehaviour : MonoBehaviour
     [SerializeField]
     private LayerMask _playerLayer;
 
+    [SerializeField]
+    private RectTransform _exitMenuTransform;
+
     private bool _canExit;
     private Controls _controls;
 
     public event EventHandler<EventArgs> ExitLevel;
+
+    private bool _menuMoving;
 
     private void Awake()
     {
@@ -37,6 +42,7 @@ public class ExitBehaviour : MonoBehaviour
         if(Utilities.IsInLayerMask(collisionObject, _playerLayer))
         {
             _canExit = true;
+            MenuUtilities.MoveIn(_exitMenuTransform,1f,LeanTweenType.easeOutQuint,null);
         }
     }
 
@@ -47,6 +53,7 @@ public class ExitBehaviour : MonoBehaviour
         if (Utilities.IsInLayerMask(collisionObject, _playerLayer))
         {
             _canExit = false;
+            MenuUtilities.MoveOutDown(_exitMenuTransform,1f,LeanTweenType.easeInQuint ,null);
         }
     }
 
