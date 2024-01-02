@@ -26,11 +26,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1005602361886336571, guid: 495e00345b8b8274ebce7d0e7cd58b09, type: 3}
       propertyPath: _destroyMask.m_Bits
-      value: 119
+      value: 1040
+      objectReference: {fileID: 0}
+    - target: {fileID: 2635167248617235073, guid: 495e00345b8b8274ebce7d0e7cd58b09, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5238520072201732983, guid: 495e00345b8b8274ebce7d0e7cd58b09, type: 3}
       propertyPath: m_Name
       value: PlayerBullet
+      objectReference: {fileID: 0}
+    - target: {fileID: 5238520072201732983, guid: 495e00345b8b8274ebce7d0e7cd58b09, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7034345281805031060, guid: 495e00345b8b8274ebce7d0e7cd58b09, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8092965089783686969, guid: 495e00345b8b8274ebce7d0e7cd58b09, type: 3}
       propertyPath: m_LocalPosition.x
@@ -71,6 +83,10 @@ PrefabInstance:
     - target: {fileID: 8092965089783686969, guid: 495e00345b8b8274ebce7d0e7cd58b09, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8758671709856248777, guid: 495e00345b8b8274ebce7d0e7cd58b09, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

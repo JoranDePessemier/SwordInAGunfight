@@ -517,7 +517,7 @@ namespace WaveFunctionCollapse
         private void SpawnExit()
         {
             Vector2Int randomCoords = Vector2Int.zero;
-            int borderIndex = UnityEngine.Random.Range(0, 3);
+            int borderIndex = UnityEngine.Random.Range(0, 4);
 
             switch (borderIndex)
             {
@@ -540,7 +540,7 @@ namespace WaveFunctionCollapse
 
             while (_gridComponents[randomCoords].InstantiatedTile.SpawnLevelExit(_levelExit) == null)
             {
-                borderIndex = UnityEngine.Random.Range(0, 3);
+                borderIndex = UnityEngine.Random.Range(0, 4);
 
                 switch (borderIndex)
                 {
