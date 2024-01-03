@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5156538147929184524, guid: 6f85654d8dc4a934db6b7a0d7add0d2a, type: 3}
+      propertyPath: _instantiateOnDeath
+      value: 
+      objectReference: {fileID: 5159383110806670435, guid: b9f4967dbc5c0ce4db04cd67acebf801, type: 3}
+    - target: {fileID: 5156538147929184524, guid: 6f85654d8dc4a934db6b7a0d7add0d2a, type: 3}
       propertyPath: _pickupsToDrop.Array.data[0]._amountToGenerate
       value: 10
       objectReference: {fileID: 0}

@@ -4,6 +4,20 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
+public class GameStatsEventArgs : EventArgs
+{
+    public GameStatsEventArgs(bool wonGame, int points, float remainingTime)
+    {
+        WonGame = wonGame;
+        Points = points;
+        RemainingTime = remainingTime;
+    }
+
+    public bool WonGame { get; private set; }
+    public int Points { get; private set; }
+    public float RemainingTime { get;private set; }
+}
+
 public class GameLoop : MonoBehaviour
 {
     private PlayerPickup _pickupScript;
@@ -21,7 +35,6 @@ public class GameLoop : MonoBehaviour
 
     private int _currentPlayerHp;
 
-    private bool _isWin;
     private bool _isGameOver;
 
     private int CurrentPlayerHp { 
@@ -46,6 +59,8 @@ public class GameLoop : MonoBehaviour
 
     private float _gameTime;
     private float GameTime { get { return _gameTime; } set { _gameTime = value; _uiController?.SetTimer(value); } }
+
+    public event EventHandler<GameStatsEventArgs> GameEnded;
 
     private void Start()
     {
@@ -78,6 +93,8 @@ public class GameLoop : MonoBehaviour
 
     private void Update()
     {
+        if(_isGameOver) return;
+
         if(GameTime < 0)
         {
             GameOver();
@@ -90,24 +107,22 @@ public class GameLoop : MonoBehaviour
 
     private void GameOver()
     {
-        if (_isGameOver || _isWin)
+        if (_isGameOver)
             return;
 
         _isGameOver = true;
 
-        //TODO: switch to cool screen
-        print("GAME OVER GAME OVER GAME OVER");
+        OnGameEnded(new GameStatsEventArgs(true, _playerPoints, _currentPlayerHp));
     }
 
     private void GameWin(object sender, EventArgs e)
     {
-        if (_isGameOver || _isWin)
+        if (_isGameOver)
             return;
 
-        _isWin = true;
+        _isGameOver = true;
 
-        //TODO: switch to cool screen
-        print("YOU WON YOU WON YOU WON");
+        OnGameEnded(new GameStatsEventArgs(true, _playerPoints, _currentPlayerHp));
     }
 
     private void GameWin() => GameWin(this,EventArgs.Empty);
@@ -121,11 +136,19 @@ public class GameLoop : MonoBehaviour
 
     private void PickedUpPoints(object sender, PickupAmountEventArgs e)
     {
+        if (_isGameOver) return;
         PlayerPoints += e.Amount;
     }
 
     private void TakenDamage(object sender, DamageTakenEventArgs e)
     {
+        if(_isGameOver) return; 
         CurrentPlayerHp -= e.Damage;
+    }
+
+    private void OnGameEnded(GameStatsEventArgs e)
+    {
+        var handler = GameEnded;
+        handler?.Invoke(this, e);
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PickupAmountEventArgs : EventArgs
 {
@@ -29,6 +30,9 @@ public class PlayerPickup : MonoBehaviour
     private LayerMask _terrainLayer;
 
     public event EventHandler<PickupAmountEventArgs> PickUpPoints;
+
+    [SerializeField]
+    private UnityEvent _pickedUpPoints;
 
     private void Awake()
     {
@@ -74,6 +78,7 @@ public class PlayerPickup : MonoBehaviour
         {
             PickupPoints points = pickup as PickupPoints;
             OnPickupPoints(new PickupAmountEventArgs(points.PickupAmount));
+            _pickedUpPoints.Invoke();
         }
     }
 

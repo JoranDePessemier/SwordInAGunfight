@@ -8,4 +8,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Rooms.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/RandomWalk.unity
+    guid: 8de6b327fb9c97048a354fc7562247ce
+  - enabled: 1
+    path: Assets/Scenes/WaveFunctionCollapse.unity
+    guid: 3fc695b2f0042b944af09f6729fccf7f
+  - enabled: 1
+    path: Assets/Scenes/LoadingScreen.unity
+    guid: 5d16a8daf5135e84684d149f28d372bd
+  - enabled: 1
+    path: Assets/Scenes/WinScreen.unity
+    guid: 560e091e7fa0ced4d82c9e9deefe7245
   m_configObjects: {}

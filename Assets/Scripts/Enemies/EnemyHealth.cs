@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -23,6 +24,11 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField]
     private LayerMask _terrainLayer;
 
+    [SerializeField]
+    private UnityEvent _death;
+
+    [SerializeField]
+    private GameObject _instantiateOnDeath;
 
     private int _health;
     private Transform _transform;
@@ -67,6 +73,8 @@ public class EnemyHealth : MonoBehaviour
                     });
             }
         }
+        _death.Invoke();
+        Instantiate(_instantiateOnDeath, _transform.position, Quaternion.identity);
 
         Destroy(this.gameObject);
     }

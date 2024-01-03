@@ -344,6 +344,10 @@ MonoBehaviour:
   _terrainLayer:
     serializedVersion: 2
     m_Bits: 1024
+  _death:
+    m_PersistentCalls:
+      m_Calls: []
+  _instantiateOnDeath: {fileID: 5159383110806670435, guid: ccbbb5a2912841f4cb632e7dac1ec6e3, type: 3}
 --- !u!1 &7662546978583602840
 GameObject:
   m_ObjectHideFlags: 0
