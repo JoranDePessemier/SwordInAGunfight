@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
 
     public GameStateName NextLevel { get; set; } = GameStateName.Level3;
 
+    public bool MenuOpened { get; set; }
+
     public GameStatsEventArgs LatestGameStats
     {
         get
@@ -75,6 +77,8 @@ public class GameManager : MonoBehaviour
         States.Add(GameStateName.Level3, new PlayingState(this, "RandomWalk"));
         States.Add(GameStateName.Loading, new LoadingState(this));
         States.Add(GameStateName.Win, new WinState(this));
+        States.Add(GameStateName.GameOver, new LoseState(this));
+        States.Add(GameStateName.MainMenu, new MenuState(this));
 
         HighScores.Add(GameStateName.Level1, 0);
         HighScores.Add(GameStateName.Level2, 0);

@@ -23,6 +23,7 @@ public class WinState : GameState
         {
             InitialiseScene(null);
         }
+        MusicManager.Instance.ChangeMusic("EndTheme");
     }
 
     private void InitialiseScene(AsyncOperation obj)
@@ -51,6 +52,5 @@ public class WinState : GameState
     {
         _screen.Retry -= RetryLevel;
         _screen.Menu -= GoToMenu;
-        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
     }
 }

@@ -45,4 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startingPlayerHp: 6
-  _startingGameTime: 120
+  _startingGameTime: 300

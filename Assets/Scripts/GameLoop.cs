@@ -112,7 +112,7 @@ public class GameLoop : MonoBehaviour
 
         _isGameOver = true;
 
-        OnGameEnded(new GameStatsEventArgs(true, _playerPoints, _currentPlayerHp));
+        OnGameEnded(new GameStatsEventArgs(false, _playerPoints, _gameTime));
     }
 
     private void GameWin(object sender, EventArgs e)
@@ -122,7 +122,7 @@ public class GameLoop : MonoBehaviour
 
         _isGameOver = true;
 
-        OnGameEnded(new GameStatsEventArgs(true, _playerPoints, _currentPlayerHp));
+        OnGameEnded(new GameStatsEventArgs(true, _playerPoints, _gameTime));
     }
 
     private void GameWin() => GameWin(this,EventArgs.Empty);

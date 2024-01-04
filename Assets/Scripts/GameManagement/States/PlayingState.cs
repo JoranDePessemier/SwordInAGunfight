@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEditorInternal;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 
 public class PlayingState : GameState
 {
@@ -24,6 +17,8 @@ public class PlayingState : GameState
         _gameLoop.GameEnded += OnGameEnded;
         _transition = GameObject.FindObjectOfType<SceneTransition>();
         _transition.MoveOut();
+
+        MusicManager.Instance.ChangeMusic("GameThemeNormal");
     }
 
     private void OnGameEnded(object sender, GameStatsEventArgs e)
@@ -51,7 +46,7 @@ public class PlayingState : GameState
 
     public override void OnExit()
     {
-        SceneManager.UnloadSceneAsync(LevelName);
+        _gameLoop.GameEnded -= OnGameEnded;
     }
 }
 

@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5156538147929184524, guid: 6f85654d8dc4a934db6b7a0d7add0d2a, type: 3}
+      propertyPath: _pickupsToDrop.Array.data[0]._amountToGenerate
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5484771718888562332, guid: 6f85654d8dc4a934db6b7a0d7add0d2a, type: 3}
       propertyPath: m_Radius
       value: 0.4
