@@ -36,6 +36,7 @@ public class GameLoop : MonoBehaviour
     private int _currentPlayerHp;
 
     private bool _isGameOver;
+    private bool _timeWarningFired;
 
     private int CurrentPlayerHp { 
         get 
@@ -56,6 +57,9 @@ public class GameLoop : MonoBehaviour
 
     [SerializeField]
     private float _startingGameTime;
+
+    [SerializeField]
+    private float _timeRemainingWarning;
 
     private float _gameTime;
     private float GameTime { get { return _gameTime; } set { _gameTime = value; _uiController?.SetTimer(value); } }
@@ -103,6 +107,17 @@ public class GameLoop : MonoBehaviour
         {
             GameTime -= Time.deltaTime;
         }
+
+        if(GameTime <= _timeRemainingWarning && !_timeWarningFired)
+        {
+            TriggerTimeWarning();
+            _timeWarningFired = true;
+        }
+    }
+
+    private void TriggerTimeWarning()
+    {
+        MusicManager.Instance.ChangeMusic("GameThemeFast");
     }
 
     private void GameOver()

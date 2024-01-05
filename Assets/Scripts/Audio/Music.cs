@@ -22,20 +22,25 @@ public class Music
     public string Name => _name;
 
     [SerializeField]
-    private AudioClip _clip;
+    private AudioClip _intro;
 
-    public AudioClip Clip => _clip;
+    [SerializeField]
+    private AudioClip _loop;
+
+    [SerializeField]
+    private AudioClip _outro;
+
+    public AudioClip Loop => _loop;
+
+    public AudioClip Outro => _outro;
+
+    public AudioClip Intro => _intro;
 
     [SerializeField]
     [Range(0f, 1f)]
     private float _volume = 1f;
 
     public float Volume => _volume;
-
-    [SerializeField]
-    private bool _looping;
-
-    public bool Looping => _looping;
 
     public AudioSource source { get; set; }
 

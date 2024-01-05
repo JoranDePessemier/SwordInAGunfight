@@ -1272,6 +1272,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameLoop
       objectReference: {fileID: 0}
+    - target: {fileID: 4999703322067488991, guid: 0252963b7de491944a31c8af5d6ab17a, type: 3}
+      propertyPath: _timeRemainingWarning
+      value: 240
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -38,20 +39,46 @@ public class MusicManager : MonoBehaviour
     {
         music.source = this.AddComponent<AudioSource>();
         music.source.volume = music.Volume;
-        music.source.clip = music.Clip;
+        music.source.clip = music.Loop;
+        music.source.loop = true;
         music.source.playOnAwake = false;
-        music.source.loop = music.Looping;
     }
 
     private void StartFadeIn(string name,float fadeSpeed)
     {
         Music neededMusic = FindMusicByName(name);
+
         neededMusic.source.volume = 0f;
-        neededMusic.source.Play();
+
+        if (neededMusic.Intro != null)
+        {
+            neededMusic.source.clip = neededMusic.Intro;
+            neededMusic.source.loop = false;
+            neededMusic.source.Play();
+            if (neededMusic.Loop != null)
+            {
+                StartCoroutine(PlayLoopAfterIntro(neededMusic));
+            }
+        }
+        else
+        {
+            neededMusic.source.clip = neededMusic.Loop;
+            neededMusic.source.loop = true;
+            neededMusic.source.Play();
+        }
 
         _activeMusic = neededMusic.Name;
 
         StartCoroutine(FadeIn(neededMusic, fadeSpeed,null));
+    }
+
+    private IEnumerator PlayLoopAfterIntro(Music neededMusic)
+    {
+        yield return new WaitForSecondsRealtime(neededMusic.Intro.length);
+
+        neededMusic.source.clip = neededMusic.Loop;
+        neededMusic.source.loop = true;
+        neededMusic.source.Play();
     }
 
     private void StartFadeIn(string name) => StartFadeIn(name,_standardFadeSpeed);
@@ -59,6 +86,14 @@ public class MusicManager : MonoBehaviour
     private void StartFadeOut(string name, float fadeSpeed)
     {
         Music neededMusic = FindMusicByName(name);
+
+        if(neededMusic.Outro != null)
+        {
+            neededMusic.source.clip = neededMusic.Outro;
+            neededMusic.source.loop = false;
+            neededMusic.source.Play();
+        }
+
         StartCoroutine(FadeOut(neededMusic, fadeSpeed, () => neededMusic.source.Stop()));
     }
 
@@ -107,6 +142,7 @@ public class MusicManager : MonoBehaviour
     private  IEnumerator FadeIn(Music music, float fadeSpeed, Action onComplete)
     {
         music.state = MusicState.FadeIn;
+        
         while (music.source.volume < music.Volume && music.state == MusicState.FadeIn)
         {
             music.source.volume = Mathf.MoveTowards(music.source.volume, music.Volume, fadeSpeed * Time.unscaledDeltaTime);
