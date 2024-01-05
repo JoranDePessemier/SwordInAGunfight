@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Events;
 
 public enum EnemyState
 {
@@ -62,6 +63,9 @@ public class EnemyBaseBehaviour : MonoBehaviour
 
     [SerializeField]
     private AttackPart[] _attack;
+
+    [SerializeField]
+    private UnityEvent _attackEvent;
 
     [Header("Visuals")]
     [SerializeField]
@@ -241,6 +245,7 @@ public class EnemyBaseBehaviour : MonoBehaviour
 
     private void Attack()
     {
+        _attackEvent.Invoke();
         StartCoroutine(Utilities.WaitForTime(_attack[_currentAttackIndex].TimeAfterLastPart, () =>
         {
             FireProjectile(_attack[_currentAttackIndex]);

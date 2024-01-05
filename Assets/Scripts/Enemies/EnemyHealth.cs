@@ -25,6 +25,9 @@ public class EnemyHealth : MonoBehaviour
     private LayerMask _terrainLayer;
 
     [SerializeField]
+    private int _maxSpawnTries = 100;
+
+    [SerializeField]
     private UnityEvent _death;
 
     [SerializeField]
@@ -32,11 +35,13 @@ public class EnemyHealth : MonoBehaviour
 
     private int _health;
     private Transform _transform;
+    private CameraWiggle _cameraWiggle;
 
     private void Awake()
     {
         _health = _startingHealth;
         _transform = transform;
+        _cameraWiggle = FindObjectOfType<CameraWiggle>();
     }
 
     public void Hit()
@@ -46,6 +51,7 @@ public class EnemyHealth : MonoBehaviour
         if(_health <= 0)
         {
             Kill();
+            _cameraWiggle.StartWiggle();
         }
     }
 
@@ -59,10 +65,13 @@ public class EnemyHealth : MonoBehaviour
                 pickup.enabled = false;
 
                 Vector2 randomDropPoint = (UnityEngine.Random.insideUnitCircle.normalized * _pickupDropRadius) + (Vector2)_transform.position;
-                
-                while (Physics2D.Raycast(_transform.position,(randomDropPoint - (Vector2)_transform.position).normalized, Vector2.Distance(randomDropPoint, (Vector2)_transform.position), _terrainLayer))
+
+                int spawnTries = 0;
+
+                while (Physics2D.Raycast(_transform.position,(randomDropPoint - (Vector2)_transform.position).normalized, Vector2.Distance(randomDropPoint, (Vector2)_transform.position), _terrainLayer) && spawnTries < _maxSpawnTries)
                 {
                     randomDropPoint = (UnityEngine.Random.insideUnitCircle.normalized * _pickupDropRadius) + (Vector2)_transform.position;
+                    spawnTries++;
                 }
 
                 LeanTween.move(pickup.gameObject, randomDropPoint, _pickupDropMovementTime)

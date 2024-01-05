@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -42,7 +43,8 @@ public class LoadingState : GameState
     private void GameSceneLoaded(AsyncOperation obj)
     {
         _camera.SetActive(false);
-        _transition.MoveIn(() => Manager.ChangeState(Manager.NextLevel));
+        _transition.gameObject.SetActive(false);
+        Manager.ChangeState(Manager.NextLevel);
     }
 
     public override void OnExit()

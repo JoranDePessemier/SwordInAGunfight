@@ -41,6 +41,8 @@ public class PlayerAttack : MonoBehaviour
     private bool _canAttack = true;
 
     private Vector2 _mouseWorldPosition;
+    [SerializeField]
+    private CursorBehaviour _cursorController;
 
     private void Awake()
     {
@@ -78,9 +80,6 @@ public class PlayerAttack : MonoBehaviour
         {
             _transform.right = (_mouseWorldPosition - (Vector2)_transform.position).normalized;
         }
-
-
-        
     }
 
     private void StartAttack()
@@ -91,6 +90,7 @@ public class PlayerAttack : MonoBehaviour
         _attack.Invoke();
 
         StartCoroutine(WaitOutAttackTime());
+        _cursorController?.Spin(_attackTime + _timeBetweenAttacks);
 
     }
 

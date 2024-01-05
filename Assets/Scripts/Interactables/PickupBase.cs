@@ -35,12 +35,12 @@ public class PickupBase : MonoBehaviour
 
     private IEnumerator MoveToPickupSpot(Transform moveTransform, Action onComplete)
     {
-        while(Vector3.Distance(_transform.position,moveTransform.position) >= 0.1f)
+        while(Vector3.Distance(_transform.position,moveTransform.position) >= 0.15f)
         {
-            _movementSpeed += _movementAcceleration * Time.deltaTime * 0.5f;
+            _movementSpeed += _movementAcceleration * Time.fixedDeltaTime * 0.5f;
             _transform.position = Vector3.MoveTowards(_transform.position, moveTransform.position, _movementSpeed * Time.deltaTime);
-            _movementSpeed += _movementAcceleration * Time.deltaTime * 0.5f;
-            yield return new WaitForEndOfFrame();
+            _movementSpeed += _movementAcceleration * Time.fixedDeltaTime * 0.5f;
+            yield return new WaitForFixedUpdate();
         }
 
         Destroy(this.gameObject);

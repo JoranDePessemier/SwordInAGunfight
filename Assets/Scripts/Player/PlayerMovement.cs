@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -24,8 +25,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private GameObject _playerVisual;
 
+    [SerializeField]
+    private UnityEvent _startRunning;
+
+    [SerializeField]
+    private UnityEvent _endRunning; 
+
     private SpriteRenderer _playerSprite;
     private Animator _playerAnimator;
+
+    private bool _isRunning;
 
     private void Awake()
     {
@@ -59,12 +68,23 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_inputVector.SqrMagnitude() <= 0)
         {
-            _playerAnimator?.SetBool("IsRunning", false);
+            if (_isRunning)
+            {
+                _playerAnimator?.SetBool("IsRunning", false);
+                _isRunning = false;
+                _endRunning.Invoke();
+            }
         }
         else
         {
-            _playerAnimator?.SetBool("IsRunning", true);
+            if(!_isRunning)
+            {
+                _isRunning = true;
+                _playerAnimator?.SetBool("IsRunning", true);
 
+                _startRunning.Invoke();
+            }
+            
             if (_inputVector.x != 0)
             {
                 if (_inputVector.x < 0)

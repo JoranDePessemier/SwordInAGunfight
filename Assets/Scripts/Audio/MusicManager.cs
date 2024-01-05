@@ -74,7 +74,10 @@ public class MusicManager : MonoBehaviour
 
     private IEnumerator PlayLoopAfterIntro(Music neededMusic)
     {
-        yield return new WaitForSecondsRealtime(neededMusic.Intro.length);
+        while (neededMusic.source.isPlaying)
+        {
+            yield return new WaitForEndOfFrame();
+        }
 
         neededMusic.source.clip = neededMusic.Loop;
         neededMusic.source.loop = true;

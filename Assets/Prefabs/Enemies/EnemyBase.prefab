@@ -162,6 +162,7 @@ GameObject:
   - component: {fileID: 8455776836237952754}
   - component: {fileID: 5892065831764958337}
   - component: {fileID: 5156538147929184524}
+  - component: {fileID: 8066974504332829765}
   m_Layer: 8
   m_Name: EnemyBase
   m_TagString: Untagged
@@ -321,6 +322,21 @@ MonoBehaviour:
     _minAngle: 0
     _maxAngle: 0
     _setBaseAngleTowardsPlayer: 1
+  _attackEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8066974504332829765}
+        m_TargetAssemblyTypeName: LocalAudioManager, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Attack
+          m_BoolArgument: 0
+        m_CallState: 2
   _renderer: {fileID: 9034433325267267455}
 --- !u!114 &5156538147929184524
 MonoBehaviour:
@@ -344,10 +360,31 @@ MonoBehaviour:
   _terrainLayer:
     serializedVersion: 2
     m_Bits: 1024
+  _maxSpawnTries: 100
   _death:
     m_PersistentCalls:
       m_Calls: []
   _instantiateOnDeath: {fileID: 5159383110806670435, guid: ccbbb5a2912841f4cb632e7dac1ec6e3, type: 3}
+--- !u!114 &8066974504332829765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7486475574420756518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e01c2f8df1d45f488fd2236b1bed367, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundsToAdd:
+  - _name: Attack
+    _clip: {fileID: 8300000, guid: df023c8b0fcc174419a515ddb37f83d4, type: 3}
+    _volume: 1
+    _looping: 0
+    _pitchVariation: {x: 0.9, y: 1.1}
+    _is3dSound: 1
+    _maxDistance: 8
 --- !u!1 &7662546978583602840
 GameObject:
   m_ObjectHideFlags: 0

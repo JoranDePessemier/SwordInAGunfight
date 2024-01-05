@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameStatsEventArgs : EventArgs
 {
@@ -51,6 +52,7 @@ public class GameLoop : MonoBehaviour
             if(_currentPlayerHp <= 0)
             {
                 GameOver();
+                _healthScript.Die();
             }
         } 
     }
@@ -60,6 +62,15 @@ public class GameLoop : MonoBehaviour
 
     [SerializeField]
     private float _timeRemainingWarning;
+
+    [SerializeField]
+    private UnityEvent _startWarning;
+
+    [SerializeField]
+    private UnityEvent _gameOver;
+
+    [SerializeField]
+    private UnityEvent _winGame;
 
     private float _gameTime;
     private float GameTime { get { return _gameTime; } set { _gameTime = value; _uiController?.SetTimer(value); } }
@@ -118,12 +129,17 @@ public class GameLoop : MonoBehaviour
     private void TriggerTimeWarning()
     {
         MusicManager.Instance.ChangeMusic("GameThemeFast");
+        _uiController.StartPulsingTimer();
+        _startWarning.Invoke();
+        _exitBehaviour.AppearPointer();
     }
 
     private void GameOver()
     {
         if (_isGameOver)
             return;
+        
+        _gameOver.Invoke();
 
         _isGameOver = true;
 
@@ -134,6 +150,8 @@ public class GameLoop : MonoBehaviour
     {
         if (_isGameOver)
             return;
+
+        _winGame.Invoke();
 
         _isGameOver = true;
 

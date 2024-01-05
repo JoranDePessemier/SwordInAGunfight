@@ -39,6 +39,11 @@ public class SoundEffect
     [SerializeField]
     private float _maxDistance;
 
+    [SerializeField]
+    private bool _playOnAwake = false;
+
+    public bool PlayOnAwake => _playOnAwake;
+
     public float MaxDistance => _maxDistance;   
 
     public AudioSource source { get; set; }

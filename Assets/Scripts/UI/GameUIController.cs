@@ -24,6 +24,12 @@ public class GameUIController : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI _scoreText;
+    private PulseUIVisual _timerVisual;
+
+    private void Awake()
+    {
+        _timerVisual = _timerText.GetComponent<PulseUIVisual>();
+    }
 
     public void SetHp(int hp)
     {
@@ -58,5 +64,10 @@ public class GameUIController : MonoBehaviour
         int seconds = (int)(time % 60);
 
         _timerText.text = $"{minutes:00}:{seconds:00}";
+    }
+
+    public void StartPulsingTimer()
+    {
+        _timerVisual.StartPulsing();
     }
 }

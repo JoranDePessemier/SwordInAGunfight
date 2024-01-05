@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 2393204290183157765}
   - component: {fileID: 7603367755049763729}
   - component: {fileID: 3502913165685301427}
+  - component: {fileID: 1467353205221115902}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -272,10 +273,61 @@ MonoBehaviour:
   _scaleTime: 0.5
   _select:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1467353205221115902}
+        m_TargetAssemblyTypeName: LocalAudioManager, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Hover
+          m_BoolArgument: 0
+        m_CallState: 2
   _clickedScene:
     m_PersistentCalls:
       m_Calls: []
   _clickedPrefab:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1467353205221115902}
+        m_TargetAssemblyTypeName: LocalAudioManager, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Select
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1467353205221115902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7086713005382106342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e01c2f8df1d45f488fd2236b1bed367, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundsToAdd:
+  - _name: Select
+    _clip: {fileID: 8300000, guid: 43195e2625341dd4b9cf2c988cb33dec, type: 3}
+    _volume: 1
+    _looping: 0
+    _pitchVariation: {x: 0.9, y: 1.1}
+    _is3dSound: 0
+    _maxDistance: 0
+  - _name: Hover
+    _clip: {fileID: 8300000, guid: e6f7cf227a0045a4d89197e6008fa06c, type: 3}
+    _volume: 1
+    _looping: 0
+    _pitchVariation: {x: 0.9, y: 1.1}
+    _is3dSound: 0
+    _maxDistance: 0

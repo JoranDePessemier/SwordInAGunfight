@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2609218409166966529}
   - component: {fileID: 4999703322067488991}
+  - component: {fileID: 6162050894712427516}
   m_Layer: 0
   m_Name: GameLoop
   m_TagString: Untagged
@@ -46,3 +47,86 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startingPlayerHp: 6
   _startingGameTime: 300
+  _timeRemainingWarning: 120
+  _startWarning:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6162050894712427516}
+        m_TargetAssemblyTypeName: LocalAudioManager, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Alarm
+          m_BoolArgument: 0
+        m_CallState: 2
+  _gameOver:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6162050894712427516}
+        m_TargetAssemblyTypeName: LocalAudioManager, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Death
+          m_BoolArgument: 0
+        m_CallState: 2
+  _winGame:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6162050894712427516}
+        m_TargetAssemblyTypeName: LocalAudioManager, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Win
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &6162050894712427516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3556420958542976531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e01c2f8df1d45f488fd2236b1bed367, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundsToAdd:
+  - _name: Alarm
+    _clip: {fileID: 8300000, guid: ec314a43b13379640ab60cab59afd731, type: 3}
+    _volume: 1
+    _looping: 0
+    _pitchVariation: {x: 1, y: 1}
+    _is3dSound: 0
+    _maxDistance: 0
+    _playOnAwake: 0
+  - _name: Death
+    _clip: {fileID: 8300000, guid: 86bce746f884e8249a487540d24873c3, type: 3}
+    _volume: 1
+    _looping: 0
+    _pitchVariation: {x: 1, y: 1}
+    _is3dSound: 0
+    _maxDistance: 0
+    _playOnAwake: 0
+  - _name: Win
+    _clip: {fileID: 8300000, guid: 26444e9a86311f447b82d8609ba1495c, type: 3}
+    _volume: 1
+    _looping: 0
+    _pitchVariation: {x: 1, y: 1}
+    _is3dSound: 0
+    _maxDistance: 0
+    _playOnAwake: 0

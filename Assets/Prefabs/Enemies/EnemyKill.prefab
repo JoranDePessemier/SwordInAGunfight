@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5856355136899490356}
   - component: {fileID: 7864828306701452024}
   - component: {fileID: 9154790605467843457}
+  - component: {fileID: 7519140718849810364}
   m_Layer: 0
   m_Name: EnemyKill
   m_TagString: Untagged
@@ -4926,3 +4927,24 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &7519140718849810364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5159383110806670435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e01c2f8df1d45f488fd2236b1bed367, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundsToAdd:
+  - _name: Kil
+    _clip: {fileID: 8300000, guid: aaf5e2168be526a448db4a2de3c2ed06, type: 3}
+    _volume: 1
+    _looping: 0
+    _pitchVariation: {x: 0.9, y: 1.1}
+    _is3dSound: 1
+    _maxDistance: 20
+    _playOnAwake: 1

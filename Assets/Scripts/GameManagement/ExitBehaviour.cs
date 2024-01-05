@@ -1,8 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class ExitBehaviour : MonoBehaviour
 {
@@ -12,16 +11,34 @@ public class ExitBehaviour : MonoBehaviour
     [SerializeField]
     private RectTransform _exitMenuTransform;
 
+    [SerializeField]
+    private RectTransform _exitPointerRotator;
+
+    [SerializeField]
+    private RectTransform _exitPointerImage;
+
     private bool _canExit;
     private Controls _controls;
 
     public event EventHandler<EventArgs> ExitLevel;
 
-    private bool _menuMoving;
+    private Transform _player;
+
+    private bool _pointerShouldAppear;
+    private Transform _transform;
+    private float _exitPointerAlpha;
 
     private void Awake()
     {
         _controls = new Controls();
+        _exitPointerAlpha = _exitPointerImage.GetComponent<Image>().color.a;
+        LeanTween.alpha(_exitPointerImage, 0, 0f);
+        _transform = this.transform;
+    }
+
+    private void Start()
+    {
+        _player = FindObjectOfType<PlayerMovement>().transform;
     }
 
     private void OnEnable()
@@ -43,6 +60,11 @@ public class ExitBehaviour : MonoBehaviour
         {
             _canExit = true;
             MenuUtilities.MoveIn(_exitMenuTransform,1f,LeanTweenType.easeOutQuint,null);
+
+            if (_pointerShouldAppear)
+            {
+                LeanTween.alpha(_exitPointerImage, 0, 0.5f);
+            }
         }
     }
 
@@ -54,7 +76,22 @@ public class ExitBehaviour : MonoBehaviour
         {
             _canExit = false;
             MenuUtilities.MoveOutDown(_exitMenuTransform,1f,LeanTweenType.easeInQuint ,null);
+            if (_pointerShouldAppear)
+            {
+                LeanTween.alpha(_exitPointerImage, _exitPointerAlpha, 0.5f);
+            }
+
         }
+    }
+
+    public void AppearPointer()
+    {
+        _pointerShouldAppear = true;
+        if (!_canExit)
+        {
+            LeanTween.alpha(_exitPointerImage, _exitPointerAlpha, 1f);
+        }
+
     }
 
     private void TryToExitLevel(InputAction.CallbackContext obj)
@@ -63,6 +100,11 @@ public class ExitBehaviour : MonoBehaviour
         {
             OnExitLevel(EventArgs.Empty);
         }
+    }
+
+    private void Update()
+    {
+        _exitPointerRotator.up = _transform.position - _player.position;
     }
 
     private void OnExitLevel(EventArgs e)
