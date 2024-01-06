@@ -97,4 +97,9 @@ public class MainMenu : MonoBehaviour
     {
         OpenMenu = _modeSelectMenu;
     }
+
+    public void OpenLink(string link)
+    {
+        Application.OpenURL(link);
+    }
 }

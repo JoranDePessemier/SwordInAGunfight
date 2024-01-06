@@ -33,7 +33,6 @@ public class CameraWiggle:MonoBehaviour
 
     public void StartWiggle()
     {
-        print(_currentAmountOfWiggles);
         if(_currentAmountOfWiggles <= 0)
         {
             MoveToNewWigglePosition();

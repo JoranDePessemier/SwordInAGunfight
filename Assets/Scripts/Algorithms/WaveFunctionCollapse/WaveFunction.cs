@@ -94,16 +94,17 @@ namespace WaveFunctionCollapse
 
             while (!AllCellsCollapsed)
             {
-                yield return new WaitForSeconds(0.1f);
                 CollapseCell(CheckEntropy());
                 _gridComponents = UpdateGeneration();
             }
 
             CombineTiles();
+            AstarPath.active.Scan();
             SpawnEnemies();
             SpawnPickups();
             SpawnExit();
             DestroyGeneratedObjects();
+            yield return null;
         }
 
         private void PlaceBorderRooms()
