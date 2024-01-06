@@ -49,20 +49,20 @@ MonoBehaviour:
     _intro: {fileID: 8300000, guid: 37c690da3d6e12c4c82fbbe8a497fe86, type: 3}
     _loop: {fileID: 0}
     _outro: {fileID: 0}
-    _volume: 1
+    _volume: 0.8
   - _name: GameThemeNormal
     _intro: {fileID: 8300000, guid: 622d5eb00f3575b42aab18d365c499a2, type: 3}
     _loop: {fileID: 8300000, guid: 4c951d2c9d8909c41a5597e1d0f8668e, type: 3}
     _outro: {fileID: 8300000, guid: 92f3cce6e6e004944b67fd0e8eb9a22e, type: 3}
-    _volume: 1
+    _volume: 0.8
   - _name: GameThemeFast
     _intro: {fileID: 8300000, guid: 65125d3b0bb1eac49a5fcf7afd69761a, type: 3}
     _loop: {fileID: 8300000, guid: a35bd56f3cee63249a13b10b0707b529, type: 3}
     _outro: {fileID: 8300000, guid: eb851bf87f34f6b4a82d7a706c97ef2c, type: 3}
-    _volume: 1
+    _volume: 0.8
   - _name: TitleTheme
     _intro: {fileID: 0}
     _loop: {fileID: 8300000, guid: bcb90cf1584f9b14f87b344a2eb2e6ed, type: 3}
     _outro: {fileID: 8300000, guid: d3a8ae53d5b5bb94f9e526503c638394, type: 3}
-    _volume: 1
+    _volume: 0.8
   _standardFadeSpeed: 0.5
