@@ -16,6 +16,7 @@ public class PlayingState : GameState
         _gameLoop = GameObject.FindObjectOfType<GameLoop>();
         _gameLoop.GameEnded += OnGameEnded;
         _transition = GameObject.FindObjectOfType<SceneTransition>();
+        if(_transition != null )
         _transition.MoveOut();
 
         MusicManager.Instance.ChangeMusic("GameThemeNormal");

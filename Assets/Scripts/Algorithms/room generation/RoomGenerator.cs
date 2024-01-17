@@ -58,6 +58,9 @@ namespace RoomGeneration
         [SerializeField]
         private GeneratingItem[] _pickupPrefabs;
 
+        [SerializeField]
+        private Transform _mover;
+
         private Vector2Int _currentRoomPosition;
 
         private Vector2Int _previousRoomPosition;
@@ -73,9 +76,16 @@ namespace RoomGeneration
 
             SpawnRoom(_startingRoom);
 
+            StartCoroutine(SpawnRooms());
+        }
+
+        private IEnumerator SpawnRooms()
+        {
             while (_generatedRooms.Count < _amountToGenerate)
             {
+                yield return new WaitForSeconds(0.6f);
                 MoveRoomPosition();
+                _mover.position = RoomCoordinateUtilities.RoomToWorldCoordinate( _currentRoomPosition);
                 SpawnRoom(_roomPrefabs[Random.Range(0, _roomPrefabs.Length)]);
             }
             CombineRoomTiles();

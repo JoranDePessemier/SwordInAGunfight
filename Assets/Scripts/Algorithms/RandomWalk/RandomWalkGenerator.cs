@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -67,6 +68,9 @@ namespace RandomWalk
         [SerializeField]
         private int _spikesPerPath;
 
+        [SerializeField]
+        private Transform _moveObject;
+
         private Vector2Int _currentStep;
 
         private Vector2Int _bottomLeftTileCoordinate;
@@ -77,14 +81,22 @@ namespace RandomWalk
 
         private void Awake()
         {
-            while(_openTiles.Count < _amountOfOpenTiles)
+            StartCoroutine(Generate());
+        }
+
+        private IEnumerator Generate()
+        {
+            while (_openTiles.Count < _amountOfOpenTiles)
             {
+                yield return new WaitForSeconds(0.3f);
                 SetTilesOpen(_currentStep);
+                _moveObject.position = new Vector3(_currentStep.x * _stepAmount.x,_currentStep.y * _stepAmount.y);
                 _currentStep = MoveCoordsOneStep(_currentStep);
+                SpawnGroundTiles();
+                SpawnWallTiles();
             }
 
-            SpawnGroundTiles();
-            SpawnWallTiles();
+
             SpawnSpikes();
             SetAstar();
             SpawnExit();
@@ -108,6 +120,10 @@ namespace RandomWalk
                     if (!_openTiles.ContainsKey(coord))
                     {
                         _wallMap.SetTile((Vector3Int)coord, _wallTile);
+                    }
+                    else
+                    {
+                        _wallMap.SetTile((Vector3Int)coord, null);
                     }
                 }
             }

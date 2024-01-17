@@ -94,6 +94,7 @@ namespace WaveFunctionCollapse
 
             while (!AllCellsCollapsed)
             {
+                yield return new WaitForSeconds(0.3f);
                 CollapseCell(CheckEntropy());
                 _gridComponents = UpdateGeneration();
             }
